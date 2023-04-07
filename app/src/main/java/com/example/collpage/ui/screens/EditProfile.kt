@@ -164,7 +164,7 @@ fun EditProfile(mainViewModel: MainViewModel) {
                     ),
                     modifier = Modifier
                         .width(190.dp)
-                        .padding(top = 5.dp)
+                        .padding(top = 15.dp)
                 )
                 Divider(Modifier.width(20.dp), MaterialTheme.colors.background)
                 OutlinedTextField(
@@ -217,6 +217,17 @@ fun EditProfile(mainViewModel: MainViewModel) {
                         Modifier.padding(top = 10.dp)
                     )
                 }
+            }
+            Button(
+                onClick = { },
+                Modifier.fillMaxWidth().padding(horizontal = 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(0xFF1C6973)
+                ),
+                shape = RoundedCornerShape(20.dp)
+            ) {
+                Text("Simpan", fontFamily = Poppins,
+                    fontWeight = FontWeight.SemiBold, fontSize = 22.sp)
             }
         }
     }
