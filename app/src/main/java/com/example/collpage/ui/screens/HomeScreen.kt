@@ -36,6 +36,7 @@ fun HomeScreen(
     navigateToProfile: () -> Unit,
     navigateToSearch: () -> Unit,
     navigateToMessage: () -> Unit,
+    navigateToHome: () -> Unit,
     viewModel: MainViewModel
 ) {
     val scaffoldState = rememberScaffoldState()
@@ -84,7 +85,7 @@ fun HomeScreen(
                     }
                 }
             },
-            bottomBar = { BottomBar(viewModel) },
+            bottomBar = { BottomBar(viewModel, navigateToMessage, navigateToHome) },
             drawerContent = {
                 HomeNavDrawer(userData) {
                     Firebase.auth.signOut()
@@ -94,9 +95,7 @@ fun HomeScreen(
             }) {
             Column(Modifier.padding(it)) {
                 Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 25.dp, horizontal = 20.dp),
+                    Modifier.fillMaxWidth().padding(vertical = 25.dp, horizontal = 20.dp),
                     Arrangement.Center
                 ) {
                     Row(
@@ -250,28 +249,26 @@ fun HomeScreen(
 
 @Composable
 fun HomeTopAppBar(onNavIconClick: () -> Unit) {
-    Row(
-        Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
-    ) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         Column(Modifier.padding(start = 10.dp, top = 15.dp)) {
             IconButton(onClick = onNavIconClick) {
                 Icon(painterResource(R.drawable.nav_drawer), null)
             }
         }
         Row(Modifier.padding(end = 12.dp, top = 20.dp)) {
-            Row(modifier = Modifier
-                .padding(end = 8.dp)
-                .background(
-                    getInputColor(), RoundedCornerShape(30.dp)
-                )
-                .clickable { }) {
+            Row(
+                Modifier
+                    .padding(end = 8.dp)
+                    .background(
+                        getInputColor(), RoundedCornerShape(30.dp)
+                    )
+                    .clickable { }
+            ) {
                 Icon(
                     painterResource(R.drawable.location),
                     null,
                     tint = Color(0xFF1C6973),
-                    modifier = Modifier
-                        .size(40.dp)
-                        .padding(vertical = 8.dp)
+                    modifier = Modifier.size(40.dp).padding(vertical = 8.dp)
                 )
                 Text(
                     "Malang",
@@ -284,9 +281,7 @@ fun HomeTopAppBar(onNavIconClick: () -> Unit) {
                 Icon(
                     painterResource(R.drawable.arrow_down),
                     null,
-                    Modifier
-                        .size(32.dp)
-                        .padding(top = 11.dp, end = 12.dp)
+                    Modifier.size(32.dp).padding(top = 11.dp, end = 12.dp)
                 )
             }
         }
@@ -294,24 +289,36 @@ fun HomeTopAppBar(onNavIconClick: () -> Unit) {
 }
 
 @Composable
-fun BottomBar(viewModel: MainViewModel) {
+fun BottomBar(
+    viewModel: MainViewModel,
+    navigateToMessage: () -> Unit,
+    navigateToHome: () -> Unit
+) {
     val homeIcon = if (viewModel.selectedItem == "Home") R.drawable.home_active else R.drawable.home
     val homeIconTint = if (viewModel.selectedItem == "Home") Color(0xFF1C6973)
     else MaterialTheme.colors.onSurface
 
-//    val messageIcon = if (viewModel.selectedItem == "Mail") R.drawable.mail
-    
+    val messageIcon = if (viewModel.selectedItem == "Mail") R.drawable.mail_active else R.drawable.mail
+    val messageIconTint = if (viewModel.selectedItem == "Mail") Color(0xFF1C6973)
+    else MaterialTheme.colors.onSurface
+
     BottomAppBar(backgroundColor = MaterialTheme.colors.surface, cutoutShape = CircleShape) {
         BottomNavigationItem(
             viewModel.selectedItem == "Home",
-            { viewModel.selectedItem = "Home" },
+            {
+                viewModel.selectedItem = "Home"
+                navigateToHome()
+            },
             { Icon(painterResource(homeIcon), null, tint = homeIconTint) }
         )
         BottomNavigationItem(selected = false, onClick = {}, icon = {}, enabled = false)
         BottomNavigationItem(
             selected = viewModel.selectedItem == "Mail",
-            onClick = { viewModel.selectedItem = "Mail" },
-            icon = { Icon(painterResource(R.drawable.mail), null) },
+            onClick = {
+                viewModel.selectedItem = "Mail"
+                navigateToMessage()
+            },
+            icon = { Icon(painterResource(messageIcon), null, tint = messageIconTint) },
         )
     }
 }
@@ -408,11 +415,7 @@ fun QuickNoteSheet() {
     )
 
     Column(Modifier.fillMaxHeight()) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(top = 17.dp), Arrangement.Center
-        ) {
+        Row(Modifier.fillMaxWidth().padding(top = 17.dp), Arrangement.Center) {
             Divider(
                 Modifier
                     .background(color = Color.LightGray, shape = RoundedCornerShape(2.dp))
@@ -465,7 +468,11 @@ fun QuickNoteSheet() {
 
 @Composable
 fun CommentSheet() {
-    Row(Modifier.fillMaxWidth().padding(top = 17.dp), Arrangement.Center) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(top = 17.dp), Arrangement.Center
+    ) {
         Divider(
             Modifier
                 .background(color = Color.LightGray, shape = RoundedCornerShape(2.dp))
