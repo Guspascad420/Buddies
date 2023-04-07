@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.collpage.R
+import com.example.collpage.helper.getInputColor
 import com.example.collpage.ui.theme.Poppins
 import kotlinx.coroutines.launch
 
@@ -27,21 +28,23 @@ fun FilterScreen() {
     val scope = rememberCoroutineScope()
 
     ModalBottomSheetLayout(
-        { Text("Huuuuaaaaaa") }, sheetState = sheetState,
+        { Text("") }, sheetState = sheetState,
         sheetShape = RoundedCornerShape(20.dp, 20.dp)
     ) {
         Column(
             Modifier
-                .padding(horizontal = 8.dp)
-                .padding(top = 20.dp)
-        ) {
+                .padding(horizontal = 22.dp)
+                .padding(top = 20.dp)) {
             Box {
                 Row(Modifier.fillMaxWidth(), Arrangement.Start) {
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(painterResource(R.drawable.back_arrow), null)
                     }
                 }
-                Row(Modifier.fillMaxWidth(), Arrangement.Center) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 5.dp), Arrangement.Center) {
                     Text(
                         "Filter", fontFamily = Poppins,
                         fontWeight = FontWeight.SemiBold, fontSize = 24.sp
@@ -53,7 +56,7 @@ fun FilterScreen() {
                     "Kategori", fontFamily = Poppins,
                     fontWeight = FontWeight.Medium, fontSize = 20.sp
                 )
-                Row(
+                Surface(
                     Modifier
                         .fillMaxWidth()
                         .clickable {
@@ -61,31 +64,42 @@ fun FilterScreen() {
                                 if (sheetState.isVisible) sheetState.hide()
                                 else sheetState.show()
                             }
-                        }
-                        .background(Color(0xFFF9F9F9), RoundedCornerShape(15.dp)),
+                        },
+                    RoundedCornerShape(15.dp),
+                    getInputColor()
                 ) {
-                    Row {
+                    Row(
+                        Modifier
+                            .padding(15.dp)
+                            .fillMaxWidth(), Arrangement.SpaceBetween) {
+                        Row {
+                            Icon(
+                                painterResource(R.drawable.arts_crafts),
+                                null,
+                                Modifier.padding(top = 2.dp, end = 5.dp),
+                                Color(0xFF909090)
+                            )
+                            Text(
+                                "Desainer", fontFamily = Poppins,
+                                fontWeight = FontWeight.Medium, fontSize = 17.sp
+                            )
+                        }
                         Icon(
-                            painterResource(R.drawable.arts_crafts),
+                            painterResource(R.drawable.arrow_down),
                             null,
-                            tint = Color(0xFF909090)
-                        )
-                        Text(
-                            "Desainer", fontFamily = Poppins,
-                            fontWeight = FontWeight.Medium, fontSize = 17.sp
+                            Modifier
+                                .padding(top = 3.dp)
+                                .size(24.dp),
+                            Color(0xFF909090)
                         )
                     }
-                    Icon(
-                        painterResource(R.drawable.arrow_down),
-                        null,
-                        tint = Color(0xFF909090)
-                    )
                 }
+                Spacer(Modifier.height(10.dp))
                 Text(
                     "Sub Kategori", fontFamily = Poppins,
                     fontWeight = FontWeight.Medium, fontSize = 20.sp
                 )
-                Row(
+                Surface(
                     Modifier
                         .fillMaxWidth()
                         .clickable {
@@ -93,25 +107,47 @@ fun FilterScreen() {
                                 if (sheetState.isVisible) sheetState.hide()
                                 else sheetState.show()
                             }
-                        }
-                        .background(Color(0xFFF9F9F9), RoundedCornerShape(15.dp)),
+                        },
+                    RoundedCornerShape(15.dp),
+                    getInputColor()
                 ) {
-                    Row {
+                    Row(
+                        Modifier
+                            .padding(15.dp)
+                            .fillMaxWidth(), Arrangement.SpaceBetween) {
+                        Row {
+                            Icon(
+                                painterResource(R.drawable.phone),
+                                null,
+                                Modifier.padding(top = 2.dp, end = 5.dp),
+                                Color(0xFF909090)
+                            )
+                            Text(
+                                "UI/UX Desainer", fontFamily = Poppins,
+                                fontWeight = FontWeight.Medium, fontSize = 17.sp
+                            )
+                        }
                         Icon(
-                            painterResource(R.drawable.phone),
+                            painterResource(R.drawable.arrow_down),
                             null,
-                            tint = Color(0xFF909090)
-                        )
-                        Text(
-                            "UI/UX Desainer", fontFamily = Poppins,
-                            fontWeight = FontWeight.Medium, fontSize = 17.sp
+                            Modifier
+                                .padding(top = 3.dp)
+                                .size(24.dp),
+                            Color(0xFF909090)
                         )
                     }
-                    Icon(
-                        painterResource(R.drawable.arrow_down),
-                        null,
-                        tint = Color(0xFF909090)
-                    )
+                }
+                Spacer(Modifier.height(30.dp))
+                Button(
+                    onClick = { },
+                    Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color(0xFF1C6973)
+                    ),
+                    shape = RoundedCornerShape(20.dp)
+                ) {
+                    Text("Terapkan", fontFamily = Poppins,
+                        fontWeight = FontWeight.SemiBold, fontSize = 22.sp)
                 }
             }
         }
