@@ -10,12 +10,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.collpage.R
-import com.example.collpage.ui.HomeViewModel
+import com.example.collpage.ui.MainViewModel
 import com.example.collpage.ui.screens.ExperienceSection
 import com.example.collpage.ui.theme.Poppins
 
 @Composable
-fun ExperienceScreen(viewModel: HomeViewModel, navigateBack: () -> Unit, navigateToAdd: () -> Unit) {
+fun ExperienceScreen(viewModel: MainViewModel, navigateBack: () -> Unit, navigateToAdd: () -> Unit) {
     Column {
         Surface(Modifier.fillMaxWidth(), color = Color(0xFF1C6973)) {
             Row(

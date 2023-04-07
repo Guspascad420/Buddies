@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AddProject(
-    homeViewModel: HomeViewModel,
+    mainViewModel: MainViewModel,
     ufvm: UserFieldViewModel = viewModel(),
     navigateBack: () -> Unit
 ) {
@@ -38,8 +38,8 @@ fun AddProject(
     var sheetContent by remember { mutableStateOf(SheetContent.START_MONTHS) }
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(homeViewModel.fieldUiState) {
-        if (homeViewModel.fieldUiState == FieldUiState.Success) {
+    LaunchedEffect(mainViewModel.fieldUiState) {
+        if (mainViewModel.fieldUiState == FieldUiState.Success) {
             navigateBack()
         }
     }
@@ -47,7 +47,7 @@ fun AddProject(
     ModalBottomSheetLayout(
         sheetContent = {
             if (sheetContent == SheetContent.START_MONTHS || sheetContent == SheetContent.END_MONTHS) {
-                MonthSheet(sheetContent, homeViewModel.months, ufvm) {
+                MonthSheet(sheetContent, mainViewModel.months, ufvm) {
                     scope.launch {
                         sheetState.hide()
                     }
@@ -274,7 +274,7 @@ fun AddProject(
                             "${ufvm.endMonth} ${ufvm.endYear}",
                             ufvm.description.text
                         )
-                        homeViewModel.addUserProject(newProjectMap, newProjectInstance)
+                        mainViewModel.addUserProject(newProjectMap, newProjectInstance)
                     },
                     Modifier.padding(horizontal = 20.dp, vertical = 10.dp).fillMaxWidth(),
                     shape = RoundedCornerShape(15.dp),

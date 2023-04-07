@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.example.collpage.R
 import com.example.collpage.helper.getInputColor
 import com.example.collpage.ui.ActivityNote
-import com.example.collpage.ui.HomeViewModel
+import com.example.collpage.ui.MainViewModel
 import com.example.collpage.ui.SheetContent
 import com.example.collpage.ui.User
 import com.example.collpage.ui.theme.Poppins
@@ -35,13 +35,12 @@ fun HomeScreen(
     navigateToWelcome: () -> Unit,
     navigateToProfile: () -> Unit,
     navigateToSearch: () -> Unit,
-    viewModel: HomeViewModel
+    navigateToMessage: () -> Unit,
+    viewModel: MainViewModel
 ) {
     val scaffoldState = rememberScaffoldState()
-    val sheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded }
-    )
+    val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden,
+        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded })
     val scope = rememberCoroutineScope()
     val userData = viewModel.user
 
@@ -54,8 +53,7 @@ fun HomeScreen(
     ModalBottomSheetLayout(
         {
             if (viewModel.sheetContent == SheetContent.NOTE) QuickNoteSheet() else CommentSheet()
-        }, sheetState = sheetState,
-        sheetShape = RoundedCornerShape(20.dp, 20.dp)
+        }, sheetState = sheetState, sheetShape = RoundedCornerShape(20.dp, 20.dp)
     ) {
         Scaffold(
             scaffoldState = scaffoldState,
@@ -67,9 +65,7 @@ fun HomeScreen(
                             if (sheetState.isVisible) sheetState.hide()
                             else sheetState.show()
                         }
-                    },
-                    Modifier.size(75.dp),
-                    backgroundColor = Color(0xFF1C6973)
+                    }, Modifier.size(75.dp), backgroundColor = Color(0xFF1C6973)
                 ) {
                     Icon(
                         painterResource(R.drawable.logo_button),
@@ -95,8 +91,7 @@ fun HomeScreen(
                     viewModel.clearLists()
                     navigateToWelcome()
                 }
-            }
-        ) {
+            }) {
             Column(Modifier.padding(it)) {
                 Row(
                     Modifier
@@ -112,8 +107,7 @@ fun HomeScreen(
                             .background(
                                 getInputColor(), RoundedCornerShape(35.dp)
                             )
-                            .clickable { navigateToSearch() }
-                    ) {
+                            .clickable { navigateToSearch() }) {
                         Icon(
                             painterResource(R.drawable.search),
                             null,
@@ -130,15 +124,13 @@ fun HomeScreen(
                             color = Color(0xFF909090)
                         )
                     }
-                    Image(
-                        painterResource(R.drawable.default_profile),
+                    Image(painterResource(R.drawable.default_profile),
                         null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .clip(CircleShape)
                             .size(60.dp)
-                            .clickable { navigateToProfile() }
-                    )
+                            .clickable { navigateToProfile() })
                 }
                 Row(
                     Modifier
@@ -156,7 +148,8 @@ fun HomeScreen(
                 Surface(
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 35.dp), RoundedCornerShape(25.dp),
+                        .padding(horizontal = 35.dp),
+                    RoundedCornerShape(25.dp),
                     Color(0xFFE5E8CD)
                 ) {
                     Row(Modifier.padding(start = 24.dp), Arrangement.SpaceBetween) {
@@ -173,8 +166,7 @@ fun HomeScreen(
                                 Modifier
                                     .width(105.dp)
                                     .padding(top = 5.dp, bottom = 10.dp)
-                                    .clickable { },
-                                RoundedCornerShape(15.dp), Color(0xFF1C6973)
+                                    .clickable { }, RoundedCornerShape(15.dp), Color(0xFF1C6973)
                             ) {
                                 Text(
                                     "Cari Kerja",
@@ -185,7 +177,8 @@ fun HomeScreen(
                             }
                         }
                         Image(
-                            painterResource(R.drawable.image), null,
+                            painterResource(R.drawable.image),
+                            null,
                             Modifier.padding(top = 8.dp, end = 25.dp)
                         )
                     }
@@ -201,7 +194,8 @@ fun HomeScreen(
                         ) {
                             Row {
                                 Image(
-                                    painterResource(R.drawable.microsoft), null,
+                                    painterResource(R.drawable.microsoft),
+                                    null,
                                     Modifier.padding(top = 5.dp)
                                 )
                                 Text(
@@ -265,14 +259,12 @@ fun HomeTopAppBar(onNavIconClick: () -> Unit) {
             }
         }
         Row(Modifier.padding(end = 12.dp, top = 20.dp)) {
-            Row(
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .background(
-                        getInputColor(), RoundedCornerShape(30.dp)
-                    )
-                    .clickable { }
-            ) {
+            Row(modifier = Modifier
+                .padding(end = 8.dp)
+                .background(
+                    getInputColor(), RoundedCornerShape(30.dp)
+                )
+                .clickable { }) {
                 Icon(
                     painterResource(R.drawable.location),
                     null,
@@ -302,23 +294,20 @@ fun HomeTopAppBar(onNavIconClick: () -> Unit) {
 }
 
 @Composable
-fun BottomBar(viewModel: HomeViewModel) {
-    viewModel.selectedItem = "Home"
+fun BottomBar(viewModel: MainViewModel) {
     val homeIcon = if (viewModel.selectedItem == "Home") R.drawable.home_active else R.drawable.home
     val homeIconTint = if (viewModel.selectedItem == "Home") Color(0xFF1C6973)
     else MaterialTheme.colors.onSurface
+
+//    val messageIcon = if (viewModel.selectedItem == "Mail") R.drawable.mail
+    
     BottomAppBar(backgroundColor = MaterialTheme.colors.surface, cutoutShape = CircleShape) {
         BottomNavigationItem(
             viewModel.selectedItem == "Home",
             { viewModel.selectedItem = "Home" },
             { Icon(painterResource(homeIcon), null, tint = homeIconTint) }
         )
-        BottomNavigationItem(
-            selected = false,
-            onClick = {},
-            icon = {},
-            enabled = false
-        )
+        BottomNavigationItem(selected = false, onClick = {}, icon = {}, enabled = false)
         BottomNavigationItem(
             selected = viewModel.selectedItem == "Mail",
             onClick = { viewModel.selectedItem = "Mail" },
@@ -344,13 +333,17 @@ fun HomeNavDrawer(userData: User, onLogoutClick: () -> Unit) {
                 .size(120.dp)
         )
         Text(
-            "Selamat Datang!", fontFamily = Poppins,
-            fontSize = 23.sp, fontWeight = FontWeight.SemiBold,
+            "Selamat Datang!",
+            fontFamily = Poppins,
+            fontSize = 23.sp,
+            fontWeight = FontWeight.SemiBold,
             color = Color(0xFFE5E8CD)
         )
         Text(
-            userData.name, fontFamily = Poppins,
-            fontSize = 23.sp, fontWeight = FontWeight.Medium,
+            userData.name,
+            fontFamily = Poppins,
+            fontSize = 23.sp,
+            fontWeight = FontWeight.Medium,
             color = Color.White
         )
         Button(
@@ -363,8 +356,11 @@ fun HomeNavDrawer(userData: User, onLogoutClick: () -> Unit) {
         ) {
             Icon(painterResource(R.drawable.settings), null, tint = Color.White)
             Text(
-                "Pengaturan", Modifier.padding(start = 10.dp),
-                fontFamily = Poppins, fontWeight = FontWeight.SemiBold, color = Color.White
+                "Pengaturan",
+                Modifier.padding(start = 10.dp),
+                fontFamily = Poppins,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White
             )
         }
         Button(
@@ -382,19 +378,32 @@ fun QuickNoteSheet() {
     var activeCard by remember { mutableStateOf("Jadwal") }
     val activityNoteList: List<ActivityNote> = listOf(
         ActivityNote(
-            "Jadwal", "24 Acara", R.drawable.calendar,
-            Color(0xFF1C6973), Color(0xFFA8E2EA),
-            Color(0xFFD4F1F5), Color(0xFFB2EEF3), R.drawable.calendar_back
-        ),
-        ActivityNote(
-            "Catatan", "12 Konten", R.drawable.note,
-            Color(0xFFE93030), Color(0xFFF7CDCD),
-            Color(0xFFFBE6E6), Color(0xFFFED6D6), R.drawable.note_back
-        ),
-        ActivityNote(
-            "Tugas", "6 Proyek", R.drawable.project,
-            Color(0xFF97A04A), Color(0xFFD7DBB2),
-            Color(0xFFE1E4C5), Color(0xFFEFF2C8), R.drawable.task_back
+            "Jadwal",
+            "24 Acara",
+            R.drawable.calendar,
+            Color(0xFF1C6973),
+            Color(0xFFA8E2EA),
+            Color(0xFFD4F1F5),
+            Color(0xFFB2EEF3),
+            R.drawable.calendar_back
+        ), ActivityNote(
+            "Catatan",
+            "12 Konten",
+            R.drawable.note,
+            Color(0xFFE93030),
+            Color(0xFFF7CDCD),
+            Color(0xFFFBE6E6),
+            Color(0xFFFED6D6),
+            R.drawable.note_back
+        ), ActivityNote(
+            "Tugas",
+            "6 Proyek",
+            R.drawable.project,
+            Color(0xFF97A04A),
+            Color(0xFFD7DBB2),
+            Color(0xFFE1E4C5),
+            Color(0xFFEFF2C8),
+            R.drawable.task_back
         )
     )
 
@@ -407,15 +416,15 @@ fun QuickNoteSheet() {
             Divider(
                 Modifier
                     .background(color = Color.LightGray, shape = RoundedCornerShape(2.dp))
-                    .width(250.dp),
-                thickness = 5.dp
+                    .width(250.dp), thickness = 5.dp
             )
         }
         Row(
             Modifier
                 .fillMaxWidth()
                 .padding(top = 20.dp)
-                .padding(horizontal = 18.dp), Arrangement.SpaceBetween
+                .padding(horizontal = 18.dp),
+            Arrangement.SpaceBetween
         ) {
             Text(
                 "Aktivitas",
@@ -447,8 +456,7 @@ fun QuickNoteSheet() {
                 val activeBackIconColor = if (activeCard == it.title) it.activeBackIconColor
                 else Color(0xFFF3F3F3)
                 ActivityNoteCard(
-                    it, activeBgColor,
-                    activeIconTint, activeIconBgColor, activeBackIconColor
+                    it, activeBgColor, activeIconTint, activeIconBgColor, activeBackIconColor
                 ) { activeCard = it.title }
             }
         }
@@ -457,11 +465,7 @@ fun QuickNoteSheet() {
 
 @Composable
 fun CommentSheet() {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(top = 17.dp), Arrangement.Center
-    ) {
+    Row(Modifier.fillMaxWidth().padding(top = 17.dp), Arrangement.Center) {
         Divider(
             Modifier
                 .background(color = Color.LightGray, shape = RoundedCornerShape(2.dp))
@@ -500,27 +504,18 @@ fun ActivityNoteCard(
                 .padding(top = 18.dp)
                 .padding(horizontal = 12.dp)
         ) {
-            Row(
-                Modifier
-                    .fillMaxWidth(),
-                Arrangement.SpaceBetween
-            ) {
+            Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
                 Surface(
-                    Modifier
-                        .size(50.dp), CircleShape, activeIconBgColor
+                    Modifier.size(50.dp), CircleShape, activeIconBgColor
                 ) {
                     Icon(
-                        painterResource(note.iconId), null,
-                        Modifier.padding(14.dp), activeIconTint
+                        painterResource(note.iconId), null, Modifier.padding(14.dp), activeIconTint
                     )
                 }
             }
             Spacer(Modifier.height(32.dp))
             Text(
-                note.title,
-                fontFamily = Poppins,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 22.sp
+                note.title, fontFamily = Poppins, fontWeight = FontWeight.SemiBold, fontSize = 22.sp
             )
             Text(note.desc, fontFamily = Poppins, fontSize = 17.sp)
             Spacer(Modifier.height(20.dp))

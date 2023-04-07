@@ -1,4 +1,4 @@
-package com.example.collpage.ui.screens
+package com.example.collpage.ui.screens.user_fields.achievements
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.collpage.R
 import com.example.collpage.helper.getInputColor
-import com.example.collpage.ui.HomeViewModel
+import com.example.collpage.ui.MainViewModel
 import com.example.collpage.ui.SheetContent
 import com.example.collpage.ui.UserFieldViewModel
 import com.example.collpage.ui.theme.Poppins
@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AddCertiificate(homeViewModel: HomeViewModel, ufvm: UserFieldViewModel = viewModel()){
+fun AddAchievement(mainViewModel: MainViewModel, ufvm: UserFieldViewModel = viewModel()) {
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded }
@@ -35,7 +35,7 @@ fun AddCertiificate(homeViewModel: HomeViewModel, ufvm: UserFieldViewModel = vie
             if (sheetContent == SheetContent.START_MONTHS || sheetContent == SheetContent.END_MONTHS) {
                 com.example.collpage.ui.screens.user_fields.project.MonthSheet(
                     sheetContent,
-                    homeViewModel.months,
+                    mainViewModel.months,
                     ufvm
                 ) {
                     scope.launch {
@@ -79,7 +79,7 @@ fun AddCertiificate(homeViewModel: HomeViewModel, ufvm: UserFieldViewModel = vie
             Spacer(Modifier.height(25.dp))
             Column(Modifier.padding(horizontal = 15.dp)) {
                 Text(
-                    "Nama Sertifikasi",
+                    "Judul",
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,
                     fontFamily = Poppins
@@ -94,7 +94,7 @@ fun AddCertiificate(homeViewModel: HomeViewModel, ufvm: UserFieldViewModel = vie
                         backgroundColor = MaterialTheme.colors.background
                     )
                 )
-                Spacer(Modifier.height(15.dp))
+                Spacer(Modifier.height(20.dp))
                 Text(
                     "Penyelenggara",
                     fontWeight = FontWeight.Medium,
@@ -111,9 +111,9 @@ fun AddCertiificate(homeViewModel: HomeViewModel, ufvm: UserFieldViewModel = vie
                         backgroundColor = MaterialTheme.colors.background
                     )
                 )
-                Spacer(Modifier.height(15.dp))
+                Spacer(Modifier.height(20.dp))
                 Text(
-                    "Tanggal Penerbitan",
+                    "Tanggal Mulai",
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,
                     fontFamily = Poppins
@@ -168,27 +168,7 @@ fun AddCertiificate(homeViewModel: HomeViewModel, ufvm: UserFieldViewModel = vie
                         )
                     }
                 }
-                Spacer(Modifier.height(15.dp))
-                Text(
-                    "Link Sertifikasi",
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp,
-                    fontFamily = Poppins
-                )
-                OutlinedTextField(value = "",
-                    onValueChange = {},
-                    shape = RoundedCornerShape(10.dp),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        backgroundColor = getInputColor(),
-                        unfocusedBorderColor = Color.Transparent,
-                        focusedBorderColor = Color(0xFF1C6973),
-                        cursorColor = Color(0xFF1C6973)
-                    ),
-                    modifier = Modifier
-                        .width(320.dp)
-                        .padding(top = 10.dp)
-                )
-                Spacer(Modifier.height(15.dp))
+                Spacer(Modifier.height(20.dp))
                 Button(
                     onClick = { },
                     Modifier
@@ -205,3 +185,4 @@ fun AddCertiificate(homeViewModel: HomeViewModel, ufvm: UserFieldViewModel = vie
         }
     }
 }
+

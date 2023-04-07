@@ -16,10 +16,10 @@ import java.util.UUID
 
 private const val TAG = "MyActivity"
 
-class HomeViewModel : ViewModel() {
+class MainViewModel : ViewModel() {
     private val db = Firebase.firestore
     private val currentUserId = Firebase.auth.currentUser?.uid
-    var selectedItem by mutableStateOf("")
+    var selectedItem by mutableStateOf("Home")
     var user by mutableStateOf(User())
 
     var sheetContent: SheetContent by mutableStateOf(SheetContent.NOTE)

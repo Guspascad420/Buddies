@@ -10,13 +10,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.collpage.R
-import com.example.collpage.ui.HomeViewModel
+import com.example.collpage.ui.MainViewModel
 import com.example.collpage.ui.screens.EducationSection
-import com.example.collpage.ui.screens.ProjectSection
 import com.example.collpage.ui.theme.Poppins
 
 @Composable
-fun EducationScreen(viewModel: HomeViewModel, navigateToAdd: () -> Unit) {
+fun EducationScreen(viewModel: MainViewModel, navigateToAdd: () -> Unit) {
     Column {
         Surface(Modifier.fillMaxWidth(), color = Color(0xFF1C6973)) {
             Row(

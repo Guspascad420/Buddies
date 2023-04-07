@@ -1,6 +1,5 @@
 package com.example.collpage.ui.screens.user_fields.experiences
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,7 +16,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.collpage.R
 import com.example.collpage.helper.getInputColor
 import com.example.collpage.ui.FieldUiState
-import com.example.collpage.ui.HomeViewModel
+import com.example.collpage.ui.MainViewModel
 import com.example.collpage.ui.SheetContent
 import com.example.collpage.ui.UserFieldViewModel
 import com.example.collpage.ui.screens.user_fields.project.MonthSheet
@@ -28,7 +27,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AddExperience(
-    homeViewModel: HomeViewModel,
+    mainViewModel: MainViewModel,
     ufvm: UserFieldViewModel = viewModel(),
     navigateBack: () -> Unit
 ) {
@@ -39,8 +38,8 @@ fun AddExperience(
     var sheetContent by remember { mutableStateOf(SheetContent.START_MONTHS) }
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(homeViewModel.fieldUiState) {
-        if (homeViewModel.fieldUiState == FieldUiState.Success) {
+    LaunchedEffect(mainViewModel.fieldUiState) {
+        if (mainViewModel.fieldUiState == FieldUiState.Success) {
             navigateBack()
         }
     }
@@ -48,7 +47,7 @@ fun AddExperience(
     ModalBottomSheetLayout(
         sheetContent = {
             if (sheetContent == SheetContent.START_MONTHS || sheetContent == SheetContent.END_MONTHS) {
-                MonthSheet(sheetContent, homeViewModel.months, ufvm) {
+                MonthSheet(sheetContent, mainViewModel.months, ufvm) {
                     scope.launch {
                         sheetState.hide()
                     }

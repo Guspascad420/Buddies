@@ -1,26 +1,21 @@
-package com.example.collpage.ui.screens
+package com.example.collpage.ui.screens.user_fields.certificate
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.collpage.R
 import com.example.collpage.helper.getInputColor
-import com.example.collpage.ui.HomeViewModel
+import com.example.collpage.ui.MainViewModel
 import com.example.collpage.ui.SheetContent
 import com.example.collpage.ui.UserFieldViewModel
 import com.example.collpage.ui.theme.Poppins
@@ -28,7 +23,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AddAchievement(homeViewModel: HomeViewModel, ufvm: UserFieldViewModel = viewModel()) {
+fun AddCertiificate(mainViewModel: MainViewModel, ufvm: UserFieldViewModel = viewModel()){
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded }
@@ -40,7 +35,7 @@ fun AddAchievement(homeViewModel: HomeViewModel, ufvm: UserFieldViewModel = view
             if (sheetContent == SheetContent.START_MONTHS || sheetContent == SheetContent.END_MONTHS) {
                 com.example.collpage.ui.screens.user_fields.project.MonthSheet(
                     sheetContent,
-                    homeViewModel.months,
+                    mainViewModel.months,
                     ufvm
                 ) {
                     scope.launch {
@@ -84,7 +79,7 @@ fun AddAchievement(homeViewModel: HomeViewModel, ufvm: UserFieldViewModel = view
             Spacer(Modifier.height(25.dp))
             Column(Modifier.padding(horizontal = 15.dp)) {
                 Text(
-                    "Judul",
+                    "Nama Sertifikasi",
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,
                     fontFamily = Poppins
@@ -99,7 +94,7 @@ fun AddAchievement(homeViewModel: HomeViewModel, ufvm: UserFieldViewModel = view
                         backgroundColor = MaterialTheme.colors.background
                     )
                 )
-                Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(15.dp))
                 Text(
                     "Penyelenggara",
                     fontWeight = FontWeight.Medium,
@@ -116,9 +111,9 @@ fun AddAchievement(homeViewModel: HomeViewModel, ufvm: UserFieldViewModel = view
                         backgroundColor = MaterialTheme.colors.background
                     )
                 )
-                Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(15.dp))
                 Text(
-                    "Tanggal Mulai",
+                    "Tanggal Penerbitan",
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,
                     fontFamily = Poppins
@@ -173,7 +168,27 @@ fun AddAchievement(homeViewModel: HomeViewModel, ufvm: UserFieldViewModel = view
                         )
                     }
                 }
-                Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(15.dp))
+                Text(
+                    "Link Sertifikasi",
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
+                    fontFamily = Poppins
+                )
+                OutlinedTextField(value = "",
+                    onValueChange = {},
+                    shape = RoundedCornerShape(10.dp),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        backgroundColor = getInputColor(),
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedBorderColor = Color(0xFF1C6973),
+                        cursorColor = Color(0xFF1C6973)
+                    ),
+                    modifier = Modifier
+                        .width(320.dp)
+                        .padding(top = 10.dp)
+                )
+                Spacer(Modifier.height(15.dp))
                 Button(
                     onClick = { },
                     Modifier
@@ -190,4 +205,3 @@ fun AddAchievement(homeViewModel: HomeViewModel, ufvm: UserFieldViewModel = view
         }
     }
 }
-

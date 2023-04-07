@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.collpage.ui.AuthViewModel
-import com.example.collpage.ui.HomeViewModel
+import com.example.collpage.ui.MainViewModel
 import com.example.collpage.ui.screens.*
 import com.example.collpage.ui.screens.user_fields.educations.AddEducation
 import com.example.collpage.ui.screens.user_fields.educations.EducationScreen
@@ -29,7 +29,7 @@ fun AppNavHost(navController: NavHostController) {
     val auth: FirebaseAuth = Firebase.auth
     val startDestination = if (auth.currentUser != null) Screen.Home.route
     else Screen.WelcomePage.route
-    val homeViewModel: HomeViewModel = viewModel()
+    val mainViewModel: MainViewModel = viewModel()
     NavHost(navController = navController, startDestination = startDestination) {
         composable(Screen.WelcomePage.route) {
             WelcomePage(navController = navController)
@@ -50,15 +50,28 @@ fun AppNavHost(navController: NavHostController) {
             SignUpPage2(viewModel) { navController.navigate(Screen.Home.route) }
         }
         composable(Screen.Home.route) {
-            HomeScreen({
-                navController.navigate(Screen.WelcomePage.route) {
-                    popUpTo(Screen.WelcomePage.route)
-                }
-            }, {
-                navController.navigate(Screen.Profile.route) {
-                    popUpTo(Screen.Home.route)
-                }
-            }, { navController.navigate(Screen.SearchPage.route) }, homeViewModel)
+            HomeScreen(
+                {
+                    navController.navigate(Screen.WelcomePage.route) {
+                        popUpTo(Screen.WelcomePage.route)
+                    }
+                },
+                {
+                    navController.navigate(Screen.Profile.route) {
+                        popUpTo(Screen.Home.route)
+                    }
+                }, { navController.navigate(Screen.SearchPage.route) },
+                {
+                    navController.navigate(Screen.Message.route) {
+                        popUpTo(Screen.Home.route) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                mainViewModel
+            )
         }
         composable(Screen.ForgotPass.route) {
             ForgotPassword { navController.navigate(Screen.EmailCheck.route) }
@@ -70,37 +83,40 @@ fun AppNavHost(navController: NavHostController) {
             SearchPage { navController.navigate(Screen.Filter.route) }
         }
         composable(Screen.Profile.route) {
-            ProfileScreen(homeViewModel, navController)
+            ProfileScreen(mainViewModel, navController)
         }
         composable(Screen.Profile.route + "/projects") {
-            ProjectScreen(homeViewModel, { navController.popBackStack() }) {
-                navController.navigate(Screen.Profile.route + "/projects/add" )
+            ProjectScreen(mainViewModel, { navController.popBackStack() }) {
+                navController.navigate(Screen.Profile.route + "/projects/add")
             }
         }
         composable(Screen.Profile.route + "/projects/add") {
-            AddProject(homeViewModel) { navController.popBackStack() }
+            AddProject(mainViewModel) { navController.popBackStack() }
         }
         composable(Screen.Profile.route + "/educations") {
-            EducationScreen(homeViewModel) {
-                navController.navigate(Screen.Profile.route + "/educations/add" )
+            EducationScreen(mainViewModel) {
+                navController.navigate(Screen.Profile.route + "/educations/add")
             }
         }
         composable(Screen.Profile.route + "/educations/add") {
-            AddEducation(homeViewModel)
+            AddEducation(mainViewModel)
         }
         composable(Screen.Profile.route + "/experiences") {
-            ExperienceScreen(homeViewModel, { navController.popBackStack() }) {
-                navController.navigate(Screen.Profile.route + "/experiences/add" )
+            ExperienceScreen(mainViewModel, { navController.popBackStack() }) {
+                navController.navigate(Screen.Profile.route + "/experiences/add")
             }
         }
         composable(Screen.Profile.route + "/experiences/add") {
-            AddExperience(homeViewModel) { navController.popBackStack() }
+            AddExperience(mainViewModel) { navController.popBackStack() }
         }
         composable(Screen.Filter.route) {
             FilterScreen()
         }
         composable(Screen.Profile.route + "/edit") {
-            EditProfile(homeViewModel)
+            EditProfile(mainViewModel)
+        }
+        composable(Screen.Message.route) {
+            MessagePage(mainViewModel)
         }
     }
 }

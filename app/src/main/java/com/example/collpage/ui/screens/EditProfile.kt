@@ -15,16 +15,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.collpage.R
 import com.example.collpage.helper.getInputColor
-import com.example.collpage.ui.HomeViewModel
-import com.example.collpage.ui.UserFieldViewModel
+import com.example.collpage.ui.MainViewModel
 import com.example.collpage.ui.theme.Poppins
 
 @Composable
-fun EditProfile(homeViewModel: HomeViewModel) {
-    var fullName by remember { mutableStateOf(TextFieldValue(homeViewModel.user.name)) }
+fun EditProfile(mainViewModel: MainViewModel) {
+    var fullName by remember { mutableStateOf(TextFieldValue(mainViewModel.user.name)) }
     var placeOfBirth by remember { mutableStateOf(TextFieldValue("")) }
     var gender by remember { mutableStateOf("Laki-laki") }
     var district by remember { mutableStateOf("") }

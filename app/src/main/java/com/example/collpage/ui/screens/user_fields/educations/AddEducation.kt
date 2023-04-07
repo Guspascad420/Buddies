@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.collpage.R
 import com.example.collpage.helper.getInputColor
-import com.example.collpage.ui.HomeViewModel
+import com.example.collpage.ui.MainViewModel
 import com.example.collpage.ui.SheetContent
 import com.example.collpage.ui.UserFieldViewModel
 import com.example.collpage.ui.screens.user_fields.project.YearSheet
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AddEducation(homeViewModel: HomeViewModel, ufvm: UserFieldViewModel = viewModel()) {
+fun AddEducation(mainViewModel: MainViewModel, ufvm: UserFieldViewModel = viewModel()) {
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded }

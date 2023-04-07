@@ -24,7 +24,7 @@ import com.example.collpage.ui.navigation.Screen
 import com.example.collpage.ui.theme.Poppins
 
 @Composable
-fun ProfileScreen(viewModel: HomeViewModel = viewModel(), navController: NavHostController) {
+fun ProfileScreen(viewModel: MainViewModel = viewModel(), navController: NavHostController) {
     val user = viewModel.user
     val userProjects = viewModel.userProjects
     val userEducations = viewModel.userEducations
