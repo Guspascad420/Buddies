@@ -70,6 +70,15 @@ fun AppNavHost(navController: NavHostController) {
                         restoreState = true
                     }
                 },
+                {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Home.route) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
                 mainViewModel
             )
         }
@@ -116,7 +125,27 @@ fun AppNavHost(navController: NavHostController) {
             EditProfile(mainViewModel)
         }
         composable(Screen.Message.route) {
-            MessagePage(mainViewModel)
+            MessagePage(
+                mainViewModel,
+                {
+                    navController.navigate(Screen.Message.route) {
+                        popUpTo(Screen.Home.route) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Home.route) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
         }
     }
 }
