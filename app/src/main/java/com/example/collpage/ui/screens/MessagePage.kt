@@ -17,6 +17,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.collpage.helper.getInputColor
 import com.example.collpage.ui.MainViewModel
 import com.example.collpage.ui.SheetContent
@@ -25,7 +26,11 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MessagePage(viewModel: MainViewModel) {
+fun MessagePage(
+    viewModel: MainViewModel,
+    navigateToMessage: () -> Unit,
+    navigateToHome: () -> Unit
+) {
     val scaffoldState = rememberScaffoldState()
     val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden,
         confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded })
@@ -53,9 +58,9 @@ fun MessagePage(viewModel: MainViewModel) {
         },
         isFloatingActionButtonDocked = true,
         floatingActionButtonPosition = FabPosition.Center,
-        bottomBar = { BottomBar(viewModel) })
+        bottomBar = { BottomBar(viewModel, navigateToMessage, navigateToHome) })
     {
-        Column(Modifier.padding(it).padding(horizontal = 15.dp)) {
+        Column(Modifier.padding(it).padding(15.dp)) {
             Text(
                 buildAnnotatedString {
                     withStyle(SpanStyle(color = Color(0xFF97A04A))) {
@@ -63,7 +68,7 @@ fun MessagePage(viewModel: MainViewModel) {
                     }
                     append(viewModel.user.name)
                 },
-                style = TextStyle(fontFamily = Poppins, fontWeight = FontWeight.Medium)
+                style = TextStyle(fontFamily = Poppins, fontWeight = FontWeight.Medium, fontSize = 22.sp)
             )
             Spacer(Modifier.height(15.dp))
             Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
@@ -72,24 +77,27 @@ fun MessagePage(viewModel: MainViewModel) {
                         Icon(painterResource(R.drawable.search), null)
                     }
                 }
-                Row(Modifier.background(getInputColor(), RoundedCornerShape(15.dp))) {
+                Row(Modifier.background(getInputColor(), RoundedCornerShape(20.dp))) {
                     TextButton(
                         onClick = { /*TODO*/ },
-                        shape = RoundedCornerShape(15.dp)
+                        shape = RoundedCornerShape(20.dp)
                     ) {
-                        Text("Chat", Modifier.padding(horizontal = 5.dp))
+                        Text("Chat", Modifier.padding(horizontal = 10.dp),
+                            fontFamily = Poppins, color = Color(0xFF909090))
                     }
                     TextButton(
                         onClick = { /*TODO*/ },
-                        shape = RoundedCornerShape(15.dp)
+                        shape = RoundedCornerShape(20.dp)
                     ) {
-                        Text("Grup", Modifier.padding(horizontal = 5.dp))
+                        Text("Grup", Modifier.padding(horizontal = 10.dp),
+                            fontFamily = Poppins, color = Color(0xFF909090))
                     }
                     TextButton(
                         onClick = { /*TODO*/ },
-                        shape = RoundedCornerShape(15.dp)
+                        shape = RoundedCornerShape(20.dp)
                     ) {
-                        Text("Ruang", Modifier.padding(horizontal = 5.dp))
+                        Text("Ruang", Modifier.padding(horizontal = 10.dp),
+                            fontFamily = Poppins, color = Color(0xFF909090))
                     }
                 }
                 Surface(Modifier.padding(start = 5.dp), CircleShape, Color(0xFF1C6973)) {
