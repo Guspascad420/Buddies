@@ -89,7 +89,7 @@ fun HomeScreen(
             drawerContent = {
                 HomeNavDrawer(userData) {
                     Firebase.auth.signOut()
-                    viewModel.clearLists()
+                    viewModel.clearUserData()
                     navigateToWelcome()
                 }
             }) {
