@@ -45,9 +45,10 @@ fun HomeScreen(
     val scope = rememberCoroutineScope()
     val userData = viewModel.user
 
-    LaunchedEffect(key1 = userData) {
+    LaunchedEffect(key1 = true) {
+        viewModel.currentUserId = Firebase.auth.currentUser?.uid.toString()
         if (userData == User()) {
-            viewModel.getUserData()
+            viewModel.getUserData(viewModel.currentUserId)
         }
     }
 

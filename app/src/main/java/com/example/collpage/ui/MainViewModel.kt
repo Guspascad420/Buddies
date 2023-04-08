@@ -8,17 +8,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
-import java.util.UUID
+import java.util.*
 
 private const val TAG = "MyActivity"
 
 class MainViewModel : ViewModel() {
     private val db = Firebase.firestore
-    private val currentUserId = Firebase.auth.currentUser?.uid
+    var currentUserId by mutableStateOf("")
     var selectedItem by mutableStateOf("Home")
     var user by mutableStateOf(User())
 
@@ -39,12 +38,14 @@ class MainViewModel : ViewModel() {
     private val _userAchievements = mutableStateListOf<Achievement>()
     val userAchievements: List<Achievement> = _userAchievements
 
-    fun getUserData() {
-        db.collection("users").document(currentUserId.toString()).get()
-            .addOnCompleteListener {
-                user = it.result.toObject(User::class.java)!!
-                Log.d(TAG, user.toString())
-            }
+    fun getUserData(currentUserId: String) {
+        viewModelScope.launch {
+            db.collection("users").document(currentUserId).get()
+                .addOnCompleteListener {
+                    user = it.result.toObject(User::class.java)!!
+                    Log.d(TAG, user.toString())
+                }
+        }
     }
 
     fun clearUserData() {
@@ -73,7 +74,7 @@ class MainViewModel : ViewModel() {
     fun getUserExperiences() {
         viewModelScope.launch {
             db.collection("experiences")
-                .whereEqualTo("user_id", currentUserId.toString()).get()
+                .whereEqualTo("user_id", currentUserId).get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
                         _userExperiences.add(document.toObject(Experience::class.java))
@@ -85,7 +86,7 @@ class MainViewModel : ViewModel() {
     fun getUserEducations() {
         viewModelScope.launch {
             db.collection("educations")
-                .whereEqualTo("user_id", currentUserId.toString()).get()
+                .whereEqualTo("user_id", currentUserId).get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
                         _userEducations.add(document.toObject(Education::class.java))
@@ -97,7 +98,7 @@ class MainViewModel : ViewModel() {
     fun getUserAchievements() {
         viewModelScope.launch {
             db.collection("achievements")
-                .whereEqualTo("user_id", currentUserId.toString()).get()
+                .whereEqualTo("user_id", currentUserId).get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
                         _userAchievements.add(document.toObject(Achievement::class.java))
@@ -109,7 +110,7 @@ class MainViewModel : ViewModel() {
     fun getUserProjects() {
         viewModelScope.launch {
             db.collection("projects_users")
-                .whereEqualTo("user_id", currentUserId.toString()).get()
+                .whereEqualTo("user_id", currentUserId).get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
                         getProject(document["project_id"].toString())
