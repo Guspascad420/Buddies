@@ -147,7 +147,8 @@ fun FilterScreen() {
                     shape = RoundedCornerShape(20.dp)
                 ) {
                     Text("Terapkan", fontFamily = Poppins,
-                        fontWeight = FontWeight.SemiBold, fontSize = 22.sp)
+                        fontWeight = FontWeight.SemiBold, fontSize = 22.sp,
+                        color = Color.White)
                 }
             }
         }
