@@ -81,7 +81,9 @@ fun EditProfile(mainViewModel: MainViewModel) {
                     backgroundColor = getInputColor(),
                     unfocusedBorderColor = Color.Transparent
                 ),
-                modifier = Modifier.width(320.dp).padding(top = 5.dp)
+                modifier = Modifier
+                    .width(320.dp)
+                    .padding(top = 5.dp)
             )
             Text(
                 "Tempat, Tanggal Lahir*",
@@ -98,7 +100,9 @@ fun EditProfile(mainViewModel: MainViewModel) {
                     backgroundColor = getInputColor(),
                     unfocusedBorderColor = Color.Transparent
                 ),
-                modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp)
             )
             OutlinedTextField(
                 value = "",
@@ -218,16 +222,20 @@ fun EditProfile(mainViewModel: MainViewModel) {
                     )
                 }
             }
+            Spacer(Modifier.height(15.dp))
             Button(
                 onClick = { },
-                Modifier.fillMaxWidth().padding(horizontal = 10.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp),
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = Color(0xFF1C6973)
                 ),
                 shape = RoundedCornerShape(20.dp)
             ) {
                 Text("Simpan", fontFamily = Poppins,
-                    fontWeight = FontWeight.SemiBold, fontSize = 22.sp)
+                    fontWeight = FontWeight.SemiBold, fontSize = 22.sp,
+                    color = Color.White)
             }
         }
     }
