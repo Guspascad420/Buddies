@@ -47,11 +47,12 @@ class MainViewModel : ViewModel() {
             }
     }
 
-    fun clearLists() {
+    fun clearUserData() {
         _userProjects.clear()
         _userEducations.clear()
         _userExperiences.clear()
         _userAchievements.clear()
+        user = User()
     }
 
     fun addUserProject(newProjectMap: HashMap<String, String>, newProjectInstance: Project) {
