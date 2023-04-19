@@ -33,7 +33,7 @@ fun AddProject(
 ) {
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
-        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded }
+        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded }
     )
     var sheetContent by remember { mutableStateOf(SheetContent.START_MONTHS) }
     val scope = rememberCoroutineScope()
