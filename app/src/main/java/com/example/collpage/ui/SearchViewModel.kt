@@ -33,6 +33,7 @@ class SearchViewModel : ViewModel() {
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
                         val jobResult = document.toObject(Job::class.java)
+                        jobResult.id = document.id
                         getCompany(jobResult)
                     }
                 }
@@ -50,6 +51,7 @@ class SearchViewModel : ViewModel() {
 }
 
 data class Job(
+    var id: String = "",
     val name: String = "",
     var company: Company? = Company(),
     val company_id: String = "",
