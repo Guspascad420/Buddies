@@ -2,12 +2,10 @@ package com.example.collpage.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import com.example.collpage.R
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -18,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.collpage.R
 import com.example.collpage.helper.getInputColor
 import com.example.collpage.ui.MainViewModel
 import com.example.collpage.ui.SheetContent
@@ -33,7 +32,7 @@ fun MessagePage(
 ) {
     val scaffoldState = rememberScaffoldState()
     val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden,
-        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded })
+        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded })
     val scope = rememberCoroutineScope()
     viewModel.sheetContent = SheetContent.NOTE
 
@@ -60,7 +59,10 @@ fun MessagePage(
         floatingActionButtonPosition = FabPosition.Center,
         bottomBar = { BottomBar(viewModel, navigateToMessage, navigateToHome) })
     {
-        Column(Modifier.padding(it).padding(15.dp)) {
+        Column(
+            Modifier
+                .padding(it)
+                .padding(15.dp)) {
             Text(
                 buildAnnotatedString {
                     withStyle(SpanStyle(color = Color(0xFF97A04A))) {
@@ -68,7 +70,11 @@ fun MessagePage(
                     }
                     append(viewModel.user.name)
                 },
-                style = TextStyle(fontFamily = Poppins, fontWeight = FontWeight.Medium, fontSize = 22.sp)
+                style = TextStyle(
+                    fontFamily = Poppins,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 22.sp
+                )
             )
             Spacer(Modifier.height(15.dp))
             Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
@@ -82,22 +88,28 @@ fun MessagePage(
                         onClick = { /*TODO*/ },
                         shape = RoundedCornerShape(20.dp)
                     ) {
-                        Text("Chat", Modifier.padding(horizontal = 10.dp),
-                            fontFamily = Poppins, color = Color(0xFF909090))
+                        Text(
+                            "Chat", Modifier.padding(horizontal = 10.dp),
+                            fontFamily = Poppins, color = Color(0xFF909090)
+                        )
                     }
                     TextButton(
                         onClick = { /*TODO*/ },
                         shape = RoundedCornerShape(20.dp)
                     ) {
-                        Text("Grup", Modifier.padding(horizontal = 10.dp),
-                            fontFamily = Poppins, color = Color(0xFF909090))
+                        Text(
+                            "Grup", Modifier.padding(horizontal = 10.dp),
+                            fontFamily = Poppins, color = Color(0xFF909090)
+                        )
                     }
                     TextButton(
                         onClick = { /*TODO*/ },
                         shape = RoundedCornerShape(20.dp)
                     ) {
-                        Text("Ruang", Modifier.padding(horizontal = 10.dp),
-                            fontFamily = Poppins, color = Color(0xFF909090))
+                        Text(
+                            "Ruang", Modifier.padding(horizontal = 10.dp),
+                            fontFamily = Poppins, color = Color(0xFF909090)
+                        )
                     }
                 }
                 Surface(Modifier.padding(start = 5.dp), CircleShape, Color(0xFF1C6973)) {
