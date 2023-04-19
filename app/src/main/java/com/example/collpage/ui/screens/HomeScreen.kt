@@ -9,12 +9,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,7 +33,11 @@ import com.example.collpage.ui.User
 import com.example.collpage.ui.theme.Poppins
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import io.github.boguszpawlowski.composecalendar.SelectableCalendar
+import io.github.boguszpawlowski.composecalendar.header.MonthState
 import kotlinx.coroutines.launch
+import java.time.format.TextStyle
+import java.util.Locale
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -41,7 +51,7 @@ fun HomeScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
     val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden,
-        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded })
+        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded })
     val scope = rememberCoroutineScope()
     val userData = viewModel.user
 
@@ -96,7 +106,9 @@ fun HomeScreen(
             }) {
             Column(Modifier.padding(it)) {
                 Row(
-                    Modifier.fillMaxWidth().padding(vertical = 25.dp, horizontal = 20.dp),
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 25.dp, horizontal = 20.dp),
                     Arrangement.Center
                 ) {
                     Row(
@@ -269,7 +281,9 @@ fun HomeTopAppBar(onNavIconClick: () -> Unit) {
                     painterResource(R.drawable.location),
                     null,
                     tint = Color(0xFF1C6973),
-                    modifier = Modifier.size(40.dp).padding(vertical = 8.dp)
+                    modifier = Modifier
+                        .size(40.dp)
+                        .padding(vertical = 8.dp)
                 )
                 Text(
                     "Malang",
@@ -282,7 +296,9 @@ fun HomeTopAppBar(onNavIconClick: () -> Unit) {
                 Icon(
                     painterResource(R.drawable.arrow_down),
                     null,
-                    Modifier.size(32.dp).padding(top = 11.dp, end = 12.dp)
+                    Modifier
+                        .size(32.dp)
+                        .padding(top = 11.dp, end = 12.dp)
                 )
             }
         }
@@ -416,7 +432,10 @@ fun QuickNoteSheet() {
     )
 
     Column(Modifier.fillMaxHeight()) {
-        Row(Modifier.fillMaxWidth().padding(top = 17.dp), Arrangement.Center) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 17.dp), Arrangement.Center) {
             Divider(
                 Modifier
                     .background(color = Color.LightGray, shape = RoundedCornerShape(2.dp))
@@ -463,6 +482,9 @@ fun QuickNoteSheet() {
                     it, activeBgColor, activeIconTint, activeIconBgColor, activeBackIconColor
                 ) { activeCard = it.title }
             }
+        }
+        if (activeCard == "Jadwal") {
+            SelectableCalendar(Modifier.padding(15.dp), monthHeader = { CustomMonthHeader(it) })
         }
     }
 }
@@ -527,6 +549,46 @@ fun ActivityNoteCard(
             )
             Text(note.desc, fontFamily = Poppins, fontSize = 17.sp)
             Spacer(Modifier.height(20.dp))
+        }
+    }
+}
+
+@Composable
+fun CustomMonthHeader(monthState: MonthState) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Surface(Modifier, CircleShape, Color(0xFFD9D9D9)) {
+            IconButton(
+                modifier = Modifier.testTag("Decrement").size(24.dp),
+                onClick = { monthState.currentMonth = monthState.currentMonth.minusMonths(1) }
+            ) {
+                Icon(Icons.Default.KeyboardArrowLeft, null)
+            }
+        }
+        Text(
+            buildAnnotatedString {
+                append(monthState.currentMonth.month
+                    .getDisplayName(TextStyle.FULL, Locale.getDefault())
+                    .lowercase()
+                    .replaceFirstChar { it.titlecase() })
+                append(" ")
+                append(monthState.currentMonth.year.toString())
+            },
+            Modifier.testTag("YearMonthLabel"),
+            style = androidx.compose.ui.text.TextStyle(
+                fontWeight = FontWeight.Bold
+            )
+        )
+        Surface(Modifier, CircleShape, Color(0xFFD9D9D9)) {
+            IconButton(
+                modifier = Modifier.testTag("Decrement"),
+                onClick = { monthState.currentMonth = monthState.currentMonth.minusMonths(1) }
+            ) {
+                Icon(Icons.Default.KeyboardArrowRight, null)
+            }
         }
     }
 }
