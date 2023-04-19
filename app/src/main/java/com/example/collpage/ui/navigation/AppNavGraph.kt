@@ -7,7 +7,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.collpage.ui.AuthViewModel
+import com.example.collpage.ui.Job
 import com.example.collpage.ui.MainViewModel
+import com.example.collpage.ui.SearchViewModel
 import com.example.collpage.ui.screens.*
 import com.example.collpage.ui.screens.user_fields.educations.AddEducation
 import com.example.collpage.ui.screens.user_fields.educations.EducationScreen
@@ -29,7 +31,10 @@ fun AppNavHost(navController: NavHostController) {
     val auth: FirebaseAuth = Firebase.auth
     val startDestination = if (auth.currentUser != null) Screen.Home.route
     else Screen.WelcomePage.route
+
     val mainViewModel: MainViewModel = viewModel()
+    val searchViewModel: SearchViewModel = viewModel()
+
     NavHost(navController = navController, startDestination = startDestination) {
         composable(Screen.WelcomePage.route) {
             WelcomePage(navController = navController)
@@ -89,7 +94,13 @@ fun AppNavHost(navController: NavHostController) {
             EmailCheck { navController.navigate(Screen.Login.route) }
         }
         composable(Screen.SearchPage.route) {
-            SearchPage { navController.navigate(Screen.Filter.route) }
+            SearchPage(
+                searchViewModel, {
+                    navController.navigate(Screen.Filter.route)
+                }, { jobId ->
+                    navController.navigate(Screen.Job.route + "/$jobId")
+                }
+            )
         }
         composable(Screen.Profile.route) {
             ProfileScreen(mainViewModel, navController)
@@ -146,6 +157,11 @@ fun AppNavHost(navController: NavHostController) {
                     }
                 }
             )
+        }
+        composable(Screen.Job.route + "/{jobId}") {
+            val jobId = it.arguments?.getString("jobId")
+            val job: Job = searchViewModel.jobsList.filter { job -> job.id == jobId }[0]
+            JobDetailsScreen(job)
         }
     }
 }
