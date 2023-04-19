@@ -2,7 +2,15 @@ package com.example.collpage.ui.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -10,8 +18,17 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,8 +46,9 @@ import com.example.collpage.ui.theme.Poppins
 
 @Composable
 fun SearchPage(
-    viewModel: SearchViewModel = viewModel(),
-    navigateToFilter: () -> Unit
+    viewModel: SearchViewModel,
+    navigateToFilter: () -> Unit,
+    navigateToJobDetails: (String) -> Unit
 ) {
     Column(
         Modifier
@@ -81,7 +99,7 @@ fun SearchPage(
                 "Hasil Pencarian", Modifier.padding(start = 10.dp), fontFamily = Poppins,
                 fontWeight = FontWeight.SemiBold, fontSize = 24.sp
             )
-            SearchResult(viewModel = viewModel)
+            SearchResult(viewModel = viewModel, navigateToJobDetails)
         } else {
             Text(
                 "Riwayat", Modifier.padding(start = 10.dp), fontFamily = Poppins,
@@ -92,7 +110,7 @@ fun SearchPage(
 }
 
 @Composable
-fun SearchResult(viewModel: SearchViewModel) {
+fun SearchResult(viewModel: SearchViewModel, navigateToJobDetails: (String) -> Unit) {
     val resultTypeList = listOf("Semua", "Akun", "Pekerjaan", "Kursus")
     LazyColumn {
         item {
@@ -101,6 +119,8 @@ fun SearchResult(viewModel: SearchViewModel) {
                     val borderWidth = if (viewModel.activeResultType == type) 1.dp else 0.dp
                     val bgColor = if (viewModel.activeResultType == type) Color(0xFF1C6973)
                     else MaterialTheme.colors.background
+                    val textColor = if (viewModel.activeResultType == type) Color.White
+                                    else MaterialTheme.colors.onSurface
                     Button(
                         onClick = { },
                         Modifier.padding(end = 10.dp),
@@ -112,20 +132,20 @@ fun SearchResult(viewModel: SearchViewModel) {
                     ) {
                         Text(
                             type, Modifier.padding(5.dp),
-                            fontFamily = Poppins
+                            fontFamily = Poppins, color = textColor
                         )
                     }
                 }
             }
         }
         items(viewModel.jobsList) {
-            CardResult(it)
+            CardResult(it, navigateToJobDetails)
         }
     }
 }
 
 @Composable
-fun CardResult(job: Job) {
+fun CardResult(job: Job, navigateToJobDetails: (String) -> Unit) {
     Card(Modifier.padding(10.dp), RoundedCornerShape(18.dp)) {
         Column(Modifier.padding(20.dp)) {
             Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
@@ -152,7 +172,7 @@ fun CardResult(job: Job) {
                                 )
                                 if (company.is_verified) {
                                     Icon(painterResource(R.drawable.verified), null,
-                                        Modifier.padding(top = 8.dp, start = 5.dp))
+                                        Modifier.padding(top = 8.dp, start = 5.dp), tint = Color(0xFF1C6973))
                                 }
                             }
                         }
@@ -166,11 +186,7 @@ fun CardResult(job: Job) {
                         fontFamily = Poppins, color = Color(0xFF696969))
                 }
             }
-            Divider(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 15.dp, vertical = 12.dp)
-            )
+            Divider(Modifier.fillMaxWidth().padding(horizontal = 15.dp, vertical = 12.dp))
             Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
                 Row(Modifier.padding(top = 10.dp)) {
                     Image(
@@ -186,10 +202,9 @@ fun CardResult(job: Job) {
                     Text("/Bulan", fontFamily = Poppins, color = Color(0xFF909090))
                 }
                 Button(
-                    onClick = { },
+                    onClick = { navigateToJobDetails(job.id) },
                     shape = RoundedCornerShape(15.dp),
-                    colors = ButtonDefaults.buttonColors(Color(0xFF1C6973)),
-                    modifier = Modifier
+                    colors = ButtonDefaults.buttonColors(Color(0xFF1C6973))
                 ) {
                     Text(
                         "Detail",
